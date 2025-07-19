@@ -24,18 +24,18 @@ const Post = ({ post }) => {
             {tag}
           </span>
         ))}
-        <div className="alert alert-warning reactions" role="alert">
-          This post has been reacted by {post.reactions} people.
+        <div className="alert alert-warning views" role="alert">
+          This post has been viewed by {post.views} people.
         </div>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
           <button className="btn btn-success" onClick={() => likePost(post.id)}>
-            👍 Like
+            👍 Like <span className="like-count">{post.likePost}</span>
           </button>
           <button
             className="btn btn-danger"
             onClick={() => dislikePost(post.id)}
           >
-            👎 Dislike
+            👎 Dislike <span className="dislike-count">{post.dislikePost}</span>
           </button>
         </div>
       </div>
