@@ -27,3 +27,9 @@
   margin-top: 50px;
   margin-left: 10%;
 }
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

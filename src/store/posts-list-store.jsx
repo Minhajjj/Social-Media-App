@@ -5,6 +5,9 @@ export const PostList_C = createContext({
   postList: [],
   addPost: () => {},
   deletePost: () => {},
+  likePost: () => {},
+  dislikePost: () => {},
+  addInitialPosts: () => {},
 });
 
 const postListReducer = (currPostList, action) => {
@@ -27,15 +30,14 @@ const postListReducer = (currPostList, action) => {
         ? { ...post, dislikePost: post.dislikePost - 1 }
         : post
     );
+  } else if (action.type === "ADD_INITIAL_POSTS") {
+    newPostList = action.payload.posts;
   }
   return newPostList;
 };
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    postListReducer,
-    DEFAULT_POST_LIST
-  );
+  const [postList, dispatchPostList] = useReducer(postListReducer, []);
 
   const addPost = (userID, postTitle, postBody, views, tags) => {
     dispatchPostList({
@@ -47,6 +49,15 @@ const PostListProvider = ({ children }) => {
         views: views,
         userID: userID,
         tags: tags,
+      },
+    });
+  };
+
+  const addInitialPosts = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payload: {
+        posts,
       },
     });
   };
@@ -76,34 +87,18 @@ const PostListProvider = ({ children }) => {
 
   return (
     <PostList_C.Provider
-      value={{ postList, addPost, deletePost, likePost, dislikePost }}
+      value={{
+        postList,
+        addPost,
+        deletePost,
+        likePost,
+        dislikePost,
+        addInitialPosts,
+      }}
     >
       {children}
     </PostList_C.Provider>
   );
 };
-
-const DEFAULT_POST_LIST = [
-  {
-    id: "1",
-    title: "Going to Islamabad",
-    body: "Hi frineds i am going to Islamabad to enjoy my vocations",
-    views: 13,
-    userID: "user-9",
-    likePost: 123,
-    dislikePost: 43,
-    tags: ["vocation", "Islamabad", "Enjoying"],
-  },
-  {
-    id: "2",
-    title: "Going to Karachi",
-    body: "Hi frineds i am going to Karachi to see the arbian sea ",
-    views: 77,
-    userID: "user-11",
-    likePost: 23,
-    dislikePost: 11,
-    tags: ["travelling", "Karachi", "Sea"],
-  },
-];
 
 export default PostListProvider;
