@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { PostList_C } from "../store/posts-list-store";
 
 const Post = ({ post }) => {
-  const { deletePost } = useContext(PostList_C);
+  const { deletePost, likePost, dislikePost } = useContext(PostList_C);
 
   return (
     <div className="card post-card">
@@ -26,6 +26,17 @@ const Post = ({ post }) => {
         ))}
         <div className="alert alert-warning reactions" role="alert">
           This post has been reacted by {post.reactions} people.
+        </div>
+        <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+          <button className="btn btn-success" onClick={() => likePost(post.id)}>
+            👍 Like
+          </button>
+          <button
+            className="btn btn-danger"
+            onClick={() => dislikePost(post.id)}
+          >
+            👎 Dislike
+          </button>
         </div>
       </div>
     </div>

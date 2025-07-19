@@ -7,6 +7,7 @@ export const PostList_C = createContext({
   deletePost: () => {},
 });
 
+// ...existing code...
 const postListReducer = (currPostList, action) => {
   let newPostList = currPostList;
   if (action.type === "DELETE_POST") {
@@ -15,6 +16,18 @@ const postListReducer = (currPostList, action) => {
     );
   } else if (action.type === "ADD_POST") {
     newPostList = [action.payload, ...currPostList];
+  } else if (action.type === "LIKE_POST") {
+    newPostList = currPostList.map((post) =>
+      post.id === action.payload.postID
+        ? { ...post, reactions: post.reactions + 1 }
+        : post
+    );
+  } else if (action.type === "DISLIKE_POST") {
+    newPostList = currPostList.map((post) =>
+      post.id === action.payload.postID && post.reactions > 0
+        ? { ...post, reactions: post.reactions - 1 }
+        : post
+    );
   }
   return newPostList;
 };
@@ -48,8 +61,24 @@ const PostListProvider = ({ children }) => {
     });
   };
 
+  const likePost = (postID) => {
+    dispatchPostList({
+      type: "LIKE_POST",
+      payload: { postID },
+    });
+  };
+
+  const dislikePost = (postID) => {
+    dispatchPostList({
+      type: "DISLIKE_POST",
+      payload: { postID },
+    });
+  };
+
   return (
-    <PostList_C.Provider value={{ postList, addPost, deletePost }}>
+    <PostList_C.Provider
+      value={{ postList, addPost, deletePost, likePost, dislikePost }}
+    >
       {children}
     </PostList_C.Provider>
   );
