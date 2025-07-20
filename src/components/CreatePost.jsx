@@ -1,8 +1,10 @@
 import { useContext, useRef } from "react";
 import { PostList_C } from "../store/posts-list-store";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const { addPost } = useContext(PostList_C);
+  const navigate = useNavigate();
 
   const userIDElement = useRef();
   const postTitleElement = useRef();
@@ -25,6 +27,7 @@ const CreatePost = () => {
     postBodyElement.current.value = "";
     viewsElement.current.value = "";
     tagsElement.current.value = "";
+    navigate("/");
   };
 
   return (

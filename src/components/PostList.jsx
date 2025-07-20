@@ -23,10 +23,12 @@ const PostList = () => {
         }));
         addInitialPosts(postsWithReactions);
         setFetching(false);
+      })
+      .catch((error) => {
+        if (error.name === "AbortError") {
+          console.log("err");
+        }
       });
-    return () => {
-      controller.abort();
-    };
   }, []);
 
   return (

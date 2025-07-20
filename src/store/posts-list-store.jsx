@@ -31,7 +31,11 @@ const postListReducer = (currPostList, action) => {
         : post
     );
   } else if (action.type === "ADD_INITIAL_POSTS") {
-    newPostList = action.payload.posts;
+    const apiIds = action.payload.posts.map((post) => post.id);
+    const nonApiPosts = currPostList.filter(
+      (post) => !apiIds.includes(post.id)
+    );
+    newPostList = [...nonApiPosts, ...action.payload.posts];
   }
   return newPostList;
 };
@@ -49,6 +53,8 @@ const PostListProvider = ({ children }) => {
         views: views,
         userID: userID,
         tags: tags,
+        likePost: 0,
+        dislikePost: 0,
       },
     });
   };
